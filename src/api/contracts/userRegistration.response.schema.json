@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aicom.local/schemas/user-registration.response.json",
+  "title": "User Registration API - Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "email", "fullName", "role", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Newly created user id."
+    },
+    "email": { "type": "string", "format": "email" },
+    "fullName": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "phoneNumber": {
+      "type": ["string", "null"],
+      "description": "Optional phone number (E.164 recommended).",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "role": { "type": "string", "enum": ["USER", "ADMIN"] },
+    "status": { "type": "string", "enum": ["ACTIVE", "DISABLED"] },
+    "registeredBy": {
+      "type": ["string", "null"],
+      "description": "Optional admin/operator user id who initiated the registration.",
+      "format": "uuid"
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
+
