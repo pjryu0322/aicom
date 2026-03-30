@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aicom.local/schemas/user-registration.request.json",
+  "title": "Admin User Registration - Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["email", "fullName", "password"],
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "User email (unique).",
+      "minLength": 3,
+      "maxLength": 320,
+      "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+    },
+    "fullName": {
+      "type": "string",
+      "description": "User display name.",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "password": {
+      "type": "string",
+      "description": "Plain password. The application layer must hash it before persisting.",
+      "minLength": 8,
+      "maxLength": 100
+    },
+    "phoneNumber": {
+      "type": ["string", "null"],
+      "description": "Optional phone number (E.164 recommended).",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "role": {
+      "type": "string",
+      "description": "Assigned role for the user.",
+      "enum": ["USER", "ADMIN"],
+      "default": "USER"
+    },
+    "status": {
+      "type": "string",
+      "description": "Initial account status.",
+      "enum": ["ACTIVE", "DISABLED"],
+      "default": "ACTIVE"
+    }
+  }
+}
+
