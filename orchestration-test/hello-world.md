@@ -4,3 +4,4 @@
 
 - 목적: AI → Cursor → Git → PR 흐름 점검
 - 상태: 자동 생성
+- 메시지: Hello World
