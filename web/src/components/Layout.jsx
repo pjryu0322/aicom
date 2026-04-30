@@ -1,5 +1,6 @@
 import Sidebar, { MeetingWorkspaceProvider } from './Sidebar'
 import MainPanel from './MainPanel'
+import RightPanel from './RightPanel'
 
 /**
  * App shell layout for the meeting workspace.
@@ -21,6 +22,7 @@ export default function Layout({
   const isMeetingWorkspace = template === 'meeting-workspace'
   const resolvedLeft = isMeetingWorkspace ? left ?? <Sidebar /> : left
   const resolvedCenter = isMeetingWorkspace ? center ?? <MeetingWorkspaceCenter /> : center
+  const resolvedRight = isMeetingWorkspace ? right ?? <RightPanel /> : right
 
   const content = (
     <div className={`min-h-[calc(100svh-56px)] bg-slate-50 ${className}`.trim()}>
@@ -44,7 +46,7 @@ export default function Layout({
         >
           <aside className="space-y-3">{resolvedLeft}</aside>
           <main className="min-w-0">{resolvedCenter}</main>
-          <aside className="min-w-0">{right}</aside>
+          <aside className="min-w-0">{resolvedRight}</aside>
         </div>
       </div>
     </div>
