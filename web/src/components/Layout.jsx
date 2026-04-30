@@ -1,6 +1,5 @@
-import React from 'react'
-import Sidebar, { MeetingWorkspaceProvider, useMeetingWorkspace } from './Sidebar'
-import { getMeetingFile, getSpeaker } from '../lib/mockData'
+import Sidebar, { MeetingWorkspaceProvider } from './Sidebar'
+import MainPanel from './MainPanel'
 
 /**
  * App shell layout for the meeting workspace.
@@ -55,52 +54,8 @@ export default function Layout({
 }
 
 function MeetingWorkspaceCenter() {
-  const { selection } = useMeetingWorkspace()
-
-  if (selection.kind === 'meeting') {
-    const meeting = getMeetingFile(selection.id)
-    return (
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <div className="text-sm font-semibold text-slate-900">선택된 회의 파일</div>
-        <div className="mt-2">
-          <div className="text-lg font-semibold text-slate-900">{meeting.title}</div>
-          <div className="mt-1 text-sm text-slate-600">
-            {meeting.date} · {meeting.duration} · {meeting.fileName}
-          </div>
-          <div className="mt-2 inline-flex rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-700">
-            상태: {meeting.status}
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (selection.kind === 'speaker') {
-    const sp = getSpeaker(selection.id)
-    return (
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <div className="text-sm font-semibold text-slate-900">선택된 참여자/화자</div>
-        <div className="mt-2 text-lg font-semibold text-slate-900">{sp.name}</div>
-        <div className="mt-1 text-sm text-slate-600">{sp.role}</div>
-      </div>
-    )
-  }
-
-  if (selection.kind === 'step') {
-    return (
-      <div className="rounded-xl border border-slate-200 bg-white p-4">
-        <div className="text-sm font-semibold text-slate-900">선택된 작업 단계</div>
-        <div className="mt-2 text-lg font-semibold text-slate-900">{selection.id}</div>
-        <div className="mt-1 text-sm text-slate-600">좌측 단계 목록에서 항목을 선택하면 여기에서 확인할 수 있어요.</div>
-      </div>
-    )
-  }
-
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <div className="text-sm font-semibold text-slate-900">선택 항목 없음</div>
-      <div className="mt-1 text-sm text-slate-600">좌측 리스트에서 항목을 선택하세요.</div>
-    </div>
-  )
+  // Keep this wrapper so external callers can still override `center` prop,
+  // while meeting-workspace gets the central main panel by default.
+  return <MainPanel />
 }
 
