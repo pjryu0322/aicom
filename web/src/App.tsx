@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { TopNav } from './components/TopNav'
 import { Approval } from './pages/Approval'
 import { Editor } from './pages/Editor'
@@ -13,7 +13,7 @@ export default function App() {
     <div className="min-h-dvh bg-slate-50 text-slate-900">
       <TopNav />
       <Routes>
-        <Route path="/" element={<Navigate to="/workspace" replace />} />
+        <Route path="/" element={<WorkspacePage />} />
         <Route path="/upload" element={<UploadPage />} />
         <Route path="/processing" element={<ProcessingPage />} />
         <Route path="/editor" element={<Editor />} />
