@@ -65,17 +65,8 @@ function SelectionSummary({ selection }) {
 export default function MainContent() {
   const { selection, setSelection } = useMeetingWorkspace()
   const fileInputRef = useRef(null)
-  const uploadTimersRef = useRef({ intervalId: null, timeoutId: null })
-
-  function clearUploadTimers() {
-    const t = uploadTimersRef.current
-    if (t.intervalId != null) window.clearInterval(t.intervalId)
-    if (t.timeoutId != null) window.clearTimeout(t.timeoutId)
-    uploadTimersRef.current = { intervalId: null, timeoutId: null }
-  }
 
   const [uploading, setUploading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
   const [selectedFile, setSelectedFile] = useState(null)
   const [composer, setComposer] = useState('')
   const [messages, setMessages] = useState([
@@ -120,9 +111,7 @@ export default function MainContent() {
 
   function startMockUpload(file) {
     if (!file) return
-    clearUploadTimers()
     setSelectedFile(file)
-    setUploadProgress(0)
     setUploading(true)
     setMessages((prev) => [
       ...prev,
@@ -140,18 +129,7 @@ export default function MainContent() {
       },
     ])
 
-    let progress = 0
-    const intervalId = window.setInterval(() => {
-      progress = Math.min(100, progress + 8 + Math.round(Math.random() * 6))
-      setUploadProgress(progress)
-      if (progress >= 100) window.clearInterval(intervalId)
-    }, 120)
-    uploadTimersRef.current.intervalId = intervalId
-
-    const timeoutId = window.setTimeout(() => {
-      window.clearInterval(intervalId)
-      uploadTimersRef.current = { intervalId: null, timeoutId: null }
-      setUploadProgress(100)
+    window.setTimeout(() => {
       setUploading(false)
       setSelection({ kind: 'step', id: 'transcribe' })
       setMessages((prev) => [
@@ -164,7 +142,6 @@ export default function MainContent() {
         },
       ])
     }, 900)
-    uploadTimersRef.current.timeoutId = timeoutId
   }
 
   function onPickFile(e) {
@@ -203,9 +180,7 @@ export default function MainContent() {
   }
 
   function resetUpload() {
-    clearUploadTimers()
     setSelectedFile(null)
-    setUploadProgress(0)
     setUploading(false)
     setMessages((prev) => [
       ...prev,
@@ -276,7 +251,6 @@ export default function MainContent() {
             <UploadCard
               fileInputRef={fileInputRef}
               uploading={uploading}
-              uploadProgress={uploadProgress}
               selectedFile={selectedFile}
               onPickFile={onPickFile}
               onDropFile={onDropFile}

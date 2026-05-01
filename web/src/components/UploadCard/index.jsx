@@ -1,13 +1,12 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import UploadForm from './UploadForm'
 
 /**
- * 녹취 파일 업로드 카드 — 드래그앤드롭 · 파일 선택 · 진행 상태
+ * 녹취 파일 업로드 카드 — 드래그앤드롭 · 파일 선택 · 업로드 진행 표시
  */
 export default function UploadCard({
   fileInputRef,
   uploading = false,
-  uploadProgress = 0,
   selectedFile = null,
   onPickFile,
   onDropFile,
@@ -15,6 +14,23 @@ export default function UploadCard({
   onBrowse,
 }) {
   const [dragOver, setDragOver] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+
+  useEffect(() => {
+    if (uploading) {
+      setUploadProgress(0)
+      let progress = 0
+      const intervalId = window.setInterval(() => {
+        progress = Math.min(100, progress + 8 + Math.round(Math.random() * 6))
+        setUploadProgress(progress)
+        if (progress >= 100) window.clearInterval(intervalId)
+      }, 120)
+      return () => window.clearInterval(intervalId)
+    }
+    if (selectedFile) setUploadProgress(100)
+    else setUploadProgress(0)
+    return undefined
+  }, [uploading, selectedFile])
 
   const onDragEnter = useCallback((e) => {
     e.preventDefault()
