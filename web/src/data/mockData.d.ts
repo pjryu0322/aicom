@@ -1,11 +1,3 @@
-import {
-  mockMeetings as mockMeetingsRaw,
-  mockSpeakers as mockSpeakersRaw,
-  mockSummary as mockSummaryRaw,
-  mockTranscript as mockTranscriptRaw,
-  workflowSteps as workflowStepsRaw,
-} from '../data/mockData.js'
-
 export type WorkflowStepId =
   | 'upload'
   | 'transcribe'
@@ -14,8 +6,6 @@ export type WorkflowStepId =
   | 'revise'
   | 'approve'
   | 'share'
-
-export type WorkflowStepStatus = 'todo' | 'in_progress' | 'done'
 
 export type MeetingStatus =
   | '업로드 대기'
@@ -57,20 +47,8 @@ export type SummaryDoc = {
   todos: { id: string; owner: string; due: string; text: string }[]
 }
 
-export const workflowSteps = workflowStepsRaw as { id: WorkflowStepId; label: string }[]
-
-export const mockMeetings = mockMeetingsRaw as MeetingFile[]
-
-export const mockSpeakers = mockSpeakersRaw as Speaker[]
-
-export const mockTranscript = mockTranscriptRaw as TranscriptLine[]
-
-export const mockSummary = mockSummaryRaw as SummaryDoc
-
-export function getMeetingFile(meetingId: string): MeetingFile {
-  return mockMeetings.find((m) => m.id === meetingId) ?? mockMeetings[0]
-}
-
-export function getSpeaker(speakerId: string): Speaker {
-  return mockSpeakers.find((s) => s.id === speakerId) ?? mockSpeakers[0]
-}
+export const workflowSteps: { id: WorkflowStepId; label: string }[]
+export const mockMeetings: MeetingFile[]
+export const mockSpeakers: Speaker[]
+export const mockTranscript: TranscriptLine[]
+export const mockSummary: SummaryDoc
