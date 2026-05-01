@@ -1,1 +1,1 @@
-export { default } from '../components/MainPanel'
+export { default } from '../components/MainContent'
