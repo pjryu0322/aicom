@@ -1,7 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react'
 import { useMeetingWorkspace } from '../Sidebar'
 import { getMeetingFile, getSpeaker, mockTranscript, workflowSteps } from '../../lib/mockData'
-import AIStatus from './AIStatus'
+import AIStatus from '../AIStatus'
 import MessageInput from './MessageInput'
 import Timeline from './Timeline'
 import UploadCard from '../UploadCard'
@@ -67,6 +67,7 @@ export default function MainContent() {
   const fileInputRef = useRef(null)
 
   const [uploading, setUploading] = useState(false)
+  const [aiJobActive, setAiJobActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null)
   const [composer, setComposer] = useState('')
   const [messages, setMessages] = useState([
@@ -111,6 +112,7 @@ export default function MainContent() {
 
   function startMockUpload(file) {
     if (!file) return
+    setAiJobActive(false)
     setSelectedFile(file)
     setUploading(true)
     setMessages((prev) => [
@@ -132,6 +134,7 @@ export default function MainContent() {
     window.setTimeout(() => {
       setUploading(false)
       setSelection({ kind: 'step', id: 'transcribe' })
+      setAiJobActive(true)
       setMessages((prev) => [
         ...prev,
         {
@@ -182,6 +185,7 @@ export default function MainContent() {
   function resetUpload() {
     setSelectedFile(null)
     setUploading(false)
+    setAiJobActive(false)
     setMessages((prev) => [
       ...prev,
       {
@@ -242,6 +246,20 @@ export default function MainContent() {
               activeStepLabel={activeStepLabel}
               stepsSlice={stepsSlice}
               onSelectStep={(id) => setSelection({ kind: 'step', id })}
+              jobActive={aiJobActive}
+              onAutomatedStepChange={(id) => setSelection({ kind: 'step', id })}
+              onJobComplete={() => {
+                setAiJobActive(false)
+                setMessages((prev) => [
+                  ...prev,
+                  {
+                    id: `msg-${prev.length + 1}`,
+                    kind: 'system',
+                    ts: '방금',
+                    text: 'AI 변환 파이프라인이 완료되었습니다(목업). 우측 스크립트·요약 탭에서 결과를 확인하세요.',
+                  },
+                ])
+              }}
             />
           </div>
         </div>
