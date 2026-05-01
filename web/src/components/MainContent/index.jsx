@@ -4,7 +4,7 @@ import { getMeetingFile, getSpeaker, mockTranscript, workflowSteps } from '../..
 import AIStatus from './AIStatus'
 import MessageInput from './MessageInput'
 import Timeline from './Timeline'
-import UploadCard from './UploadCard'
+import UploadCard from '../UploadCard'
 
 const stepProgress = {
   upload: 100,
@@ -181,6 +181,7 @@ export default function MainContent() {
 
   function resetUpload() {
     setSelectedFile(null)
+    setUploading(false)
     setMessages((prev) => [
       ...prev,
       {
